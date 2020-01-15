@@ -1,24 +1,31 @@
 from room import Room
+from player import Player
+from item import Item
+
+# Items
+
+treasure = Item('treasure', 'gold and stuff')
+weapon = Item('weapon', "don't poke your eye out")
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", items=[treasure, weapon]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", []),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", []),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", []),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", []),
 }
 
 
@@ -49,3 +56,50 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+# Create the player with a starting room
+player_1 = Player('PickleRick', room['outside'])
+
+# Show where the player is
+
+print(f'Welcome to your Adventure, {player_1.name}! Please wait outside...')
+print(player_1.current_room)
+# print(player_1.room.description)
+
+# Player moves
+player_move = input("Choose a Direction: n, s, e, w -->  ")
+
+while player_move != 'q':
+    
+    if player_move == 'n':
+        
+        try:
+            player_1.current_room = player_1.current_room.n_to
+        except:
+            print("You've hit a wall! Try a different direction!", "\n")
+
+    if player_move == 's':
+        
+        try:
+            player_1.current_room = player_1.current_room.s_to
+        except:
+            print("You've hit a wall! Try a different direction!", "\n")
+
+    if player_move == 'e':
+        
+        try:
+            player_1.current_room = player_1.current_room.e_to
+        except:
+            print("You've hit a wall! Try a different direction!", "\n")
+
+    if player_move == 'w':
+        
+        try:
+            player_1.current_room = player_1.current_room.w_to
+        except:
+            print("You've hit a wall! Try a different direction!", "\n")
+
+    print(player_1.current_room, '\n')
+    player_1.current_room.item_list()
+
+    player_move = input("Choose a Direction: n, s, e, w -->   ")
